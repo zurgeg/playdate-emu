@@ -1,0 +1,5 @@
+name=play8
+author=zurgeg
+description=A basic Chip-8 emulator.
+bundleID=com.zurgeg.chip8
+version=1.0
