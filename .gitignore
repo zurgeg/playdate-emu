@@ -39,3 +39,9 @@ luac.out
 *.x86_64
 *.hex
 
+# Playdate program files
+*.pdx
+
+# Playdate simulator leaves this behind
+.sentry-native
+
