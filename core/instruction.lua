@@ -26,6 +26,7 @@ function handleInstruction(instruction)
     else
         print("Unknown instruction: " .. instruction)
     end
+    return currentPC
 end
 
 

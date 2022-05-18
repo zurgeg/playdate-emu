@@ -1,12 +1,37 @@
+import("gfx/text")
+
 function getROMs()
-    playdate.graphics.drawText("Getting ROMs...", 0, 0)
+    addText("Getting ROMs...")
     local roms = {}
     local romPath = "roms/"
-    local files = playdate.file.listFiles(romPath)
-    local idx = 0
-    for i in files do
-        roms[idx] = i
-        idx = idx + 1
+    if not playdate.file.isdir(romPath) then
+        playdate.file.mkdir(romPath)
+        addText("No roms found!")
+        return roms
     end
-    playdate.graphics.drawText("Found " .. idx .. " ROMs.", 0, 0)
+    local files = playdate.file.listFiles(romPath)
+    local numRoms = 0
+    for i, file in ipairs(files) do
+        print(i)
+        roms[i] = file
+        numRoms  = numRoms + 1
+    end
+    -- playdate.graphics.clear()
+    -- playdate.graphics.drawText("Found " .. numRoms .. " ROMs.", 0, 20)
+    addText("Found " .. numRoms .. " ROMs.")
+    return roms
+end
+
+function loadROM(rom)
+    addText("Loading ROM...")
+    local romPath = "roms/" .. rom
+    local romData = playdate.file.open(romPath)
+    if not romData then
+        addText("Failed to load ROM!")
+        return false
+    end
+    -- playdate.graphics.clear()
+    -- playdate.graphics.drawText("Loaded ROM!", 0, 20)
+    addText("Loaded ROM!")
+    return romData
 end
