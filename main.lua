@@ -12,14 +12,17 @@ playdate.ui.crankIndicator:start()
 local roms = getROMs()
 selectedROM = 1 -- i don't feel like implementing a proper selection system right now
 local romdata = loadROM(roms[selectedROM])
-handleRomData(romdata)
 
 function playdate.update()
     playdate.graphics.clear()
     playdate.timer.updateTimers()
     drawStage()
     if playdate.isCrankDocked() then
-        -- TODO: pause the emulator when the crank is docked
+        -- TODO: indicate that the game is paused
         playdate.ui.crankIndicator:update()
+    else
+        clearStage() 
+        runNextInstruction(romdata)
     end
+
 end

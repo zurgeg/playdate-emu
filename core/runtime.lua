@@ -1,4 +1,7 @@
+pc = 0
+
 function handleRomData(rom)
+    -- DON'T USE THIS FUNCTION
     clearStage() -- clean up
     firstInstruction, err = rom:read(2)
     print("instruction" .. firstInstruction)
@@ -17,3 +20,12 @@ function handleRomData(rom)
         pc = handleInstruction(instruction)
     end
 end
+
+function runNextInstruction(rom)
+    rom:seek(pc)
+    local instruction = rom:read(2)
+    instruction = instruction.unpack("<i2", instruction)
+    pc = handleInstruction(instruction)
+end
+
+
