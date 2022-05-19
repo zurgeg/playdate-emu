@@ -21,6 +21,7 @@ function handleInstruction(instruction)
         if debug then
             print("return from sub (unimplemented)")
         end
+        return currentPC + 2
     elseif nybble1 == 0x1000 then
         if debug then
             print("jmp " .. jmparg)
@@ -30,6 +31,10 @@ function handleInstruction(instruction)
         if debug then
             print("call " .. jmparg .. " (unimplemented)")
         end
+        return currentPC + 2
+    else
+        print("unimplemented instruction: " .. instruction)
+        return currentPC + 2
     end
 end
 
