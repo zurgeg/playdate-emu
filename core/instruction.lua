@@ -37,6 +37,8 @@ function handleInstruction(instruction)
         -- JP NNN: Jump to address NNN
         print("JP : " .. (instruction &= 0xFF0F))
         currentPC = instruction & 0xFF0F
+        currentPC = ((currentPC & 0xFF) << 8) | ((currentPC >> 8) & 0xFF)
+        print("PC: " .. currentPC)
     elseif instruction &= 0xF == 0x2 then
         -- CALL NNN: Call subroutine at NNN
         savedPC = currentPC -- save PC
