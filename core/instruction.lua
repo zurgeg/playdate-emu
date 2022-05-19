@@ -1,3 +1,4 @@
+debug = true -- set to true to enable debugging
 isSub = false
 savedPC = 0 -- where to jump back to at the end of a subroutine
 currentPC = 0
@@ -20,36 +21,46 @@ function forceUpdatePC(pc)
 end
 
 function handleInstruction(instruction)
-    if ((instruction &= 0x00F0) == 0x0 and not (instruction &= 0xF000) == 0xE) then
+    if debug then
+        print("nybble 1: " .. (instruction &= 0xF000))
+        print("nybble 2: " .. (instruction &= 0x0F00))
+        print("nybble 3: " .. (instruction &= 0x00F0))
+        print("nybble 4: " .. (instruction &= 0x000F))
+    end
+    if ((instruction &= 0xF000) == 0x0 and not (instruction &= 0x00F0) == 0xE) then
         -- JSR NNN: Jump to subroutine NNN
         --savedPC = currentPC -- save PC
         --currentPC = instruction & 0x0FFF -- jump to sub address
         --isSub = true -- set subroutine flag
-        print("ERROR: JSR not implemented")
+        if debug then
+            --print("ERROR: JSR not implemented")
+            --print("JSR " .. (instruction & 0x0FFF))
+        end
         currentPC += 2
     elseif instruction == 0x00E0 then
         -- CLS: Clear the display
+        --print("CLS")
         playdate.graphics.clear()
         currentPC += 2
     elseif instruction == 0x00EE and isSub then
         -- RET: Return from subroutine
         --currentPC = savedPC -- jump back to saved PC
         --isSub = false -- clear subroutine flag
-        print("ERROR: RET not implemented")
+        --print("ERROR: RET not implemented")
         currentPC += 2
     elseif instruction &= 0xF000 == 0x1000 then
         -- JP NNN: Jump to address NNN
-        print(instruction & 0x0FFF)
+        --print("JP": instruction & 0x0FFF)
         currentPC = instruction & 0x0FFF
     elseif instruction &= 0xF == 0x2 then
         -- CALL NNN: Call subroutine at NNN
         --savedPC = currentPC -- save PC
         --currentPC = instruction & 0xFFF0 -- jump to sub address
         --isSub = true -- set subroutine flag
-        print("ERROR: CALL not implemented")
+        --print("ERROR: CALL not implemented")
         currentPC += 2
     else
-        print("Unknown instruction: " .. instruction)
+        --print("Unknown instruction: " .. instruction)
         currentPC += 2
     end
     return currentPC
