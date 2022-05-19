@@ -1,4 +1,5 @@
 pc = 0
+didCrash = false
 
 function handleRomData(rom)
     -- DON'T USE THIS FUNCTION
@@ -21,11 +22,18 @@ function handleRomData(rom)
     end
 end
 
-function runNextInstruction(rom)
+function runNextInstruction(rom, size)
     rom:seek(pc)
+    if pc > size or didCrash then
+        clearStage()
+        addText("Aborted! pc > size! (PC: " .. pc .. ") (size: " .. size .. ")")
+        didCrash = true
+        return false
+    end
     local instruction = rom:read(2)
-    instruction = instruction.unpack("<i2", instruction)
+    instruction = instruction.unpack(">i2", instruction)
     pc = handleInstruction(instruction)
+    return true
 end
 
 
