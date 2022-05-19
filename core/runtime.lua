@@ -6,13 +6,13 @@ function handleRomData(rom)
         addText("Failed to read first instruction! (failure: " .. err .. ")")
         return
     end
-    firstInstruction = firstInstruction.unpack(">i2", firstInstruction)
+    firstInstruction = firstInstruction.unpack("<i2", firstInstruction)
     pc = handleInstruction(firstInstruction)
     while true do
         rom:seek(pc)
         print(pc)
         local instruction = rom:read(2)
-        instruction = instruction.unpack(">i2", instruction)
+        instruction = instruction.unpack("<i2", instruction)
         print("instruction" .. instruction)
         pc = handleInstruction(instruction)
     end
