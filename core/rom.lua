@@ -12,9 +12,10 @@ function getROMs()
     local files = playdate.file.listFiles(romPath)
     local numRoms = 0
     for i, file in ipairs(files) do
+        print(file)
         print(i)
         roms[i] = file
-        numRoms  = numRoms + 1
+        numRoms = numRoms + 1
     end
     -- playdate.graphics.clear()
     -- playdate.graphics.drawText("Found " .. numRoms .. " ROMs.", 0, 20)
@@ -24,6 +25,7 @@ end
 
 function loadROM(rom)
     addText("Loading ROM...")
+    print(rom)
     local romPath = "roms/" .. rom
     local romData = playdate.file.open(romPath)
     if not romData then
