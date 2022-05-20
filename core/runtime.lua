@@ -27,7 +27,7 @@ function runNextInstruction(rom, size)
     rom:seek(pc)
     local instruction = rom:read(2)
     instruction = instruction.unpack(">i2", instruction)
-    print(instruction)
+    -- print(instruction)
     lastPC = pc
     pc = handleInstruction(instruction)
     if pc > size or didCrash then
@@ -36,6 +36,12 @@ function runNextInstruction(rom, size)
         --didCrash = true
         --return false
         print("overjump... recovering...")
+        if lastPC > size then
+            clearStage()
+            addText("Aborted! lastPC > size! (lastPC: " .. lastPC .. ") (size: " .. size .. ")")
+            didCrash = true
+            return false
+        end
         pc = lastPC + 2
         forceUpdatePC(pc)
         lastPC = pc - 2
